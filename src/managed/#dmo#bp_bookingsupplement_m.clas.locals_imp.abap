@@ -16,7 +16,7 @@ CLASS lhc_travel IMPLEMENTATION.
   METHOD calculate_total_supplm_price.
 
     IF keys IS NOT INITIAL.
-      /dmo/cl_travel_auxiliary_m=>calculate_price(
+      ZTP_cl_travel_auxiliary_m=>calculate_price(
           it_travel_id = VALUE #(  FOR GROUPS <booking_suppl> OF booksuppl_key IN keys
                                        GROUP BY booksuppl_key-travel_id WITHOUT MEMBERS
                                              ( <booking_suppl> ) ) ).
@@ -31,7 +31,7 @@ CLASS lhc_travel IMPLEMENTATION.
 ********************************************************************************
   METHOD get_features.
 
-      READ ENTITY /dmo/i_booksuppl_m FROM VALUE #( FOR keyval IN keys
+      READ ENTITY ZTP_i_booksuppl_m FROM VALUE #( FOR keyval IN keys
                                                       (  %key                           = keyval-%key
                                                          %control-booking_supplement_id = if_abap_behv=>mk-on
                                                       ) )

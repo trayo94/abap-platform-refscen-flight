@@ -1,4 +1,4 @@
-@AbapCatalog.sqlViewName: '/DMO/ICUSTOM_RE'
+@AbapCatalog.sqlViewName: 'ZTP_ICUSTOM_RE'
 @AbapCatalog.compiler.compareFilter: true
 @AbapCatalog.preserveKey: true
 @AccessControl.authorizationCheck: #NOT_REQUIRED
@@ -6,8 +6,8 @@
 
 @Search.searchable: true
 
-define view /DMO/I_Customer
-  as select from /dmo/customer as Customer
+define view ZTP_I_Customer
+  as select from ZTP_customer as Customer
 
   association [0..1] to I_Country as _Country on $projection.CountryCode = _Country.Country
 

@@ -1,17 +1,17 @@
-@AbapCatalog.sqlViewName: '/DMO/ITRAVEL_M'
+@AbapCatalog.sqlViewName: 'ZTP_ITRAVEL_M'
 @AbapCatalog.compiler.compareFilter: true
 @AbapCatalog.preserveKey: true
 @AccessControl.authorizationCheck: #NOT_REQUIRED
 
 @EndUserText.label: 'Travel view - CDS data model'
 
-define root view /DMO/I_Travel_M
-  as select from /dmo/travel_m           as Travel -- the travel table is the data source for this view
+define root view ZTP_I_Travel_M
+  as select from ZTP_travel_m           as Travel -- the travel table is the data source for this view
 
-  composition [0..*] of /DMO/I_Booking_M as _Booking
+  composition [0..*] of ZTP_I_Booking_M as _Booking
 
-  association [0..1] to /DMO/I_Agency    as _Agency   on $projection.agency_id     = _Agency.AgencyID
-  association [0..1] to /DMO/I_Customer  as _Customer on $projection.customer_id   = _Customer.CustomerID
+  association [0..1] to ZTP_I_Agency    as _Agency   on $projection.agency_id     = _Agency.AgencyID
+  association [0..1] to ZTP_I_Customer  as _Customer on $projection.customer_id   = _Customer.CustomerID
   association [0..1] to I_Currency       as _Currency on $projection.currency_code = _Currency.Currency
   
  

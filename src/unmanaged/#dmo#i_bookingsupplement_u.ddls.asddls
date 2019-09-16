@@ -1,4 +1,4 @@
-@AbapCatalog.sqlViewName: '/DMO/IBOOKSUPP_U'
+@AbapCatalog.sqlViewName: 'ZTP_IBOOKSUPP_U'
 @AbapCatalog.compiler.compareFilter: true
 @AbapCatalog.preserveKey: true
 @AccessControl.authorizationCheck: #NOT_REQUIRED
@@ -11,14 +11,14 @@
 
 @Search.searchable: true
 
-define view /DMO/I_BookingSupplement_U
-  as select from /dmo/book_suppl as BookingSupplement
+define view ZTP_I_BookingSupplement_U
+  as select from ZTP_book_suppl as BookingSupplement
 
-  association        to parent /DMO/I_Booking_U  as _Booking         on  $projection.TravelID  = _Booking.TravelID
+  association        to parent ZTP_I_Booking_U  as _Booking         on  $projection.TravelID  = _Booking.TravelID
                                                                      and $projection.BookingID = _Booking.BookingID
 
-  association [1..1] to /DMO/I_Supplement     as _Product  on $projection.SupplementID = _Product.SupplementID
-  association [1..*] to /DMO/I_SupplementText as _SupplementText on  $projection.SupplementID = _SupplementText.SupplementID
+  association [1..1] to ZTP_I_Supplement     as _Product  on $projection.SupplementID = _Product.SupplementID
+  association [1..*] to ZTP_I_SupplementText as _SupplementText on  $projection.SupplementID = _SupplementText.SupplementID
 {
       @UI.facet: [ { id:            'BookingSupplement',
                      purpose:       #STANDARD,
@@ -44,7 +44,7 @@ define view /DMO/I_BookingSupplement_U
 
       @UI: { lineItem:       [ { position: 20, importance: #HIGH } ],
              identification: [ { position: 20 } ] }
-      @Consumption.valueHelpDefinition: [{entity: {name: '/DMO/I_SUPPLEMENT', element: 'SupplementID' },
+      @Consumption.valueHelpDefinition: [{entity: {name: 'ZTP_I_SUPPLEMENT', element: 'SupplementID' },
                                           additionalBinding: [{ localElement: 'Price',        element: 'Price'},
                                                               { localElement: 'CurrencyCode', element: 'CurrencyCode'}]}]
       @ObjectModel.text.association: '_SupplementText'

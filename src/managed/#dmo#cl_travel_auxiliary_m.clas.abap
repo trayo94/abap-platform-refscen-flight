@@ -1,4 +1,4 @@
-CLASS /dmo/cl_travel_auxiliary_m DEFINITION
+CLASS ZTP_cl_travel_auxiliary_m DEFINITION
   PUBLIC
   FINAL
   CREATE PUBLIC .
@@ -6,10 +6,10 @@ CLASS /dmo/cl_travel_auxiliary_m DEFINITION
 PUBLIC SECTION.
 
 *   Type definition for import parameters --------------------------
-     TYPES tt_travel_id                 TYPE TABLE OF /dmo/travel_id.
-    TYPES tt_travel_reported            TYPE TABLE FOR REPORTED /dmo/i_travel_m.
-    TYPES tt_booking_reported           TYPE TABLE FOR REPORTED  /dmo/i_booking_m.
-    TYPES tt_bookingsupplement_reported TYPE TABLE FOR REPORTED  /dmo/i_booksuppl_m.
+     TYPES tt_travel_id                 TYPE TABLE OF ZTP_travel_id.
+    TYPES tt_travel_reported            TYPE TABLE FOR REPORTED ZTP_i_travel_m.
+    TYPES tt_booking_reported           TYPE TABLE FOR REPORTED  ZTP_i_booking_m.
+    TYPES tt_bookingsupplement_reported TYPE TABLE FOR REPORTED  ZTP_i_booksuppl_m.
 
 *   Method for price calculation (used in determination calls) --------
     CLASS-METHODS calculate_price
@@ -32,7 +32,7 @@ PRIVATE SECTION.
 ENDCLASS.
 
 
-CLASS /dmo/cl_travel_auxiliary_m IMPLEMENTATION.
+CLASS ZTP_cl_travel_auxiliary_m IMPLEMENTATION.
 
   METHOD calculate_price.
 
@@ -41,7 +41,7 @@ CLASS /dmo/cl_travel_auxiliary_m IMPLEMENTATION.
     ENDIF.
 
 *   Read travel instance data
-    READ ENTITIES OF /dmo/i_travel_m
+    READ ENTITIES OF ZTP_i_travel_m
          ENTITY travel
                FROM VALUE #( FOR lv_travel_id IN it_travel_id (
                                 travel_id = lv_travel_id
@@ -49,7 +49,7 @@ CLASS /dmo/cl_travel_auxiliary_m IMPLEMENTATION.
          RESULT   DATA(lt_read_travel).
 
 
-    READ ENTITIES OF /dmo/i_travel_m
+    READ ENTITIES OF ZTP_i_travel_m
          ENTITY travel BY \_booking
                FROM VALUE #( FOR lv_travel_id IN it_travel_id (
                         travel_id = lv_travel_id
@@ -68,7 +68,7 @@ CLASS /dmo/cl_travel_auxiliary_m IMPLEMENTATION.
       LOOP AT GROUP ls_travel_key INTO DATA(ls_booking_result)
         GROUP BY ls_booking_result-currency_code INTO DATA(lv_curr).
 
-        DATA(total_book_price_by_trav_curr) = VALUE /dmo/total_price(  ).
+        DATA(total_book_price_by_trav_curr) = VALUE ZTP_total_price(  ).
 
         LOOP AT GROUP lv_curr INTO DATA(ls_booking_line).
 
@@ -78,7 +78,7 @@ CLASS /dmo/cl_travel_auxiliary_m IMPLEMENTATION.
         IF lv_curr  = <ls_travel>-currency_code.
           <ls_travel>-total_price += total_book_price_by_trav_curr.
         ELSE.
-          /dmo/cl_flight_amdp=>convert_currency(
+          ZTP_cl_flight_amdp=>convert_currency(
              EXPORTING
                iv_amount                   =  total_book_price_by_trav_curr
                iv_currency_code_source     =  lv_curr
@@ -95,7 +95,7 @@ CLASS /dmo/cl_travel_auxiliary_m IMPLEMENTATION.
     ENDLOOP.
 
 
-    READ ENTITIES OF /dmo/i_travel_m
+    READ ENTITIES OF ZTP_i_travel_m
              ENTITY booking BY \_BookSupplement
                    FROM VALUE #( FOR ls_travel IN lt_read_booking_by_travel (
                           travel_id              = ls_travel-travel_id
@@ -112,7 +112,7 @@ CLASS /dmo/cl_travel_auxiliary_m IMPLEMENTATION.
       LOOP AT GROUP ls_travel_key INTO DATA(ls_bookingsuppl_result)
         GROUP BY ls_bookingsuppl_result-currency_code INTO lv_curr.
 
-        DATA(total_suppl_price_by_trav_curr) = VALUE /dmo/total_price(  ).
+        DATA(total_suppl_price_by_trav_curr) = VALUE ZTP_total_price(  ).
 
         LOOP AT GROUP lv_curr INTO DATA(ls_booking_suppl2).
           total_suppl_price_by_trav_curr    += ls_booking_suppl2-price.
@@ -121,7 +121,7 @@ CLASS /dmo/cl_travel_auxiliary_m IMPLEMENTATION.
         IF lv_curr  = <ls_travel>-currency_code.
           <ls_travel>-total_price    += total_suppl_price_by_trav_curr.
         ELSE.
-          /dmo/cl_flight_amdp=>convert_currency(
+          ZTP_cl_flight_amdp=>convert_currency(
              EXPORTING
                iv_amount                     =  total_suppl_price_by_trav_curr
                iv_currency_code_source       =  lv_curr
@@ -137,7 +137,7 @@ CLASS /dmo/cl_travel_auxiliary_m IMPLEMENTATION.
 
     ENDLOOP.
 
-    MODIFY ENTITIES OF /dmo/i_travel_m
+    MODIFY ENTITIES OF ZTP_i_travel_m
           ENTITY travel
                  UPDATE FROM VALUE #( FOR travel IN lt_read_travel (
                    travel_id               = travel-travel_id

@@ -10,8 +10,8 @@
 
 @Search.searchable: true
 
-define view entity /DMO/C_Booking_Approver_M
-  as projection on /DMO/I_Booking_M
+define view entity ZTP_C_Booking_Approver_M
+  as projection on ZTP_I_Booking_M
 {
       @UI.facet: [ { id:            'Booking',
                      purpose:       #STANDARD,
@@ -71,7 +71,7 @@ define view entity /DMO/C_Booking_Approver_M
 
 
       /* Associations */
-      _Travel : redirected to parent /DMO/C_Travel_Approver_M,
+      _Travel : redirected to parent ZTP_C_Travel_Approver_M,
       _Customer,
       _Carrier
 

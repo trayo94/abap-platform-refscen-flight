@@ -1,4 +1,4 @@
-@AbapCatalog.sqlViewName: '/DMO/IBOOKING_M'
+@AbapCatalog.sqlViewName: 'ZTP_IBOOKING_M'
 @AbapCatalog.compiler.compareFilter: true
 @AbapCatalog.preserveKey: true
 @AccessControl.authorizationCheck: #NOT_REQUIRED
@@ -7,15 +7,15 @@
 
 @EndUserText.label: 'Booking view'
 
-define view /DMO/I_Booking_M
-  as select from /dmo/booking_m as Booking
+define view ZTP_I_Booking_M
+  as select from ZTP_booking_m as Booking
 
-  association        to parent /DMO/I_Travel_M as _Travel     on  $projection.travel_id = _Travel.travel_id
-  composition [0..*] of /DMO/I_BookSuppl_M     as _BookSupplement
+  association        to parent ZTP_I_Travel_M as _Travel     on  $projection.travel_id = _Travel.travel_id
+  composition [0..*] of ZTP_I_BookSuppl_M     as _BookSupplement
 
-  association [1..1] to /DMO/I_Customer        as _Customer   on  $projection.customer_id = _Customer.CustomerID
-  association [1..1] to /DMO/I_Carrier         as _Carrier    on  $projection.carrier_id = _Carrier.AirlineID
-  association [1..1] to /DMO/I_Connection      as _Connection on  $projection.carrier_id    = _Connection.AirlineID
+  association [1..1] to ZTP_I_Customer        as _Customer   on  $projection.customer_id = _Customer.CustomerID
+  association [1..1] to ZTP_I_Carrier         as _Carrier    on  $projection.carrier_id = _Carrier.AirlineID
+  association [1..1] to ZTP_I_Connection      as _Connection on  $projection.carrier_id    = _Connection.AirlineID
                                                               and $projection.connection_id = _Connection.ConnectionID
 
 {

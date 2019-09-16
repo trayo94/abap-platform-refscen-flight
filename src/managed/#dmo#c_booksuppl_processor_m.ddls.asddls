@@ -8,7 +8,7 @@
                                        value: 'BookingSupplementID' } } }
 @Search.searchable: true
 
-define view entity /DMO/C_BookSuppl_Processor_M as projection on /DMO/I_BookSuppl_M
+define view entity ZTP_C_BookSuppl_Processor_M as projection on ZTP_I_BookSuppl_M
 {
     @UI.facet: [ { id:              'BookingSupplement',
                    purpose:         #STANDARD,
@@ -28,7 +28,7 @@ define view entity /DMO/C_BookSuppl_Processor_M as projection on /DMO/I_BookSupp
 
     @UI: { lineItem:       [ { position: 20, importance: #HIGH } ],
            identification: [ { position: 20 } ] }
-    @Consumption.valueHelpDefinition: [ {entity: {name: '/DMO/I_SUPPLEMENT', element: 'SupplementID' } ,
+    @Consumption.valueHelpDefinition: [ {entity: {name: 'ZTP_I_SUPPLEMENT', element: 'SupplementID' } ,
                                          additionalBinding: [ { localElement: 'Price',  element: 'Price' },
                                                               { localElement: 'CurrencyCode', element: 'CurrencyCode' }] }]
     @ObjectModel.text.element: ['SupplementDescription']
@@ -47,6 +47,6 @@ define view entity /DMO/C_BookSuppl_Processor_M as projection on /DMO/I_BookSupp
     last_changed_at                   as LastChangedAt,
 
     /* Associations */
-    _Booking: redirected to parent /DMO/C_Booking_Processor_M,
+    _Booking: redirected to parent ZTP_C_Booking_Processor_M,
     _SupplementText    
 }

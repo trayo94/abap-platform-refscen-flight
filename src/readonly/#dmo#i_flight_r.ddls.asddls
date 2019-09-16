@@ -1,4 +1,4 @@
-@AbapCatalog.sqlViewName: '/DMO/IFLIGHT_R'
+@AbapCatalog.sqlViewName: 'ZTP_IFLIGHT_R'
 @AbapCatalog.compiler.compareFilter: true
 @AccessControl.authorizationCheck: #NOT_REQUIRED
 @EndUserText.label: 'Carrier View - CDS Data Model'
@@ -7,10 +7,10 @@
 @Search.searchable: true
 
 
-define view /DMO/I_Flight_R
-  as select from /dmo/flight as Flight
+define view ZTP_I_Flight_R
+  as select from ZTP_flight as Flight
 
-  association [1] to /DMO/I_Carrier as _Airline on $projection.AirlineID = _Airline.AirlineID
+  association [1] to ZTP_I_Carrier as _Airline on $projection.AirlineID = _Airline.AirlineID
 
 
 {

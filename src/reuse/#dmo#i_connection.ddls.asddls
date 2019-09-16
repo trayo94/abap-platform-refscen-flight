@@ -1,4 +1,4 @@
-@AbapCatalog.sqlViewName: '/DMO/ICONNECT_RE'
+@AbapCatalog.sqlViewName: 'ZTP_ICONNECT_RE'
 @AbapCatalog.compiler.compareFilter: true
 @AbapCatalog.preserveKey: true
 @AccessControl.authorizationCheck: #NOT_REQUIRED
@@ -6,24 +6,24 @@
 
 @Search.searchable: true
 
-define view /DMO/I_Connection
-  as select from /dmo/connection as Connection
+define view ZTP_I_Connection
+  as select from ZTP_connection as Connection
   
-  association [1..1] to /DMO/I_Carrier as _Airline  on $projection.AirlineID = _Airline.AirlineID
+  association [1..1] to ZTP_I_Carrier as _Airline  on $projection.AirlineID = _Airline.AirlineID
 
 {
       @Search.defaultSearchElement: true
       @Search.fuzzinessThreshold: 0.8
       @ObjectModel.text.association: '_Airline'
-      @Consumption.valueHelpDefinition: [{ entity: { name: '/DMO/I_Carrier', element: 'CarrierID'} }]
+      @Consumption.valueHelpDefinition: [{ entity: { name: 'ZTP_I_Carrier', element: 'CarrierID'} }]
   key Connection.carrier_id      as AirlineID,
 
   key Connection.connection_id   as ConnectionID,
 
-      @Consumption.valueHelpDefinition: [{entity: {name: '/DMO/I_Airport', element: 'Airport_ID' } }]
+      @Consumption.valueHelpDefinition: [{entity: {name: 'ZTP_I_Airport', element: 'Airport_ID' } }]
       Connection.airport_from_id as DepartureAirport,
 
-      @Consumption.valueHelpDefinition: [{entity: {name: '/DMO/I_Airport', element: 'Airport_ID' } }]
+      @Consumption.valueHelpDefinition: [{entity: {name: 'ZTP_I_Airport', element: 'Airport_ID' } }]
       Connection.airport_to_id   as DestinationAirport,
 
       Connection.departure_time  as DepartureTime,

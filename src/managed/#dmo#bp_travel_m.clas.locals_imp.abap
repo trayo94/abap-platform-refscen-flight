@@ -2,7 +2,7 @@ CLASS lhc_travel DEFINITION INHERITING FROM cl_abap_behavior_handler.
 
   PRIVATE SECTION.
 
-    TYPES tt_travel_update TYPE TABLE FOR UPDATE /DMO/I_Travel_M.
+    TYPES tt_travel_update TYPE TABLE FOR UPDATE ZTP_I_Travel_M.
 
     METHODS validate_customer          FOR VALIDATION travel~validateCustomer IMPORTING keys FOR travel.
     METHODS validate_dates             FOR VALIDATION travel~validateDates    IMPORTING keys FOR travel.
@@ -29,12 +29,12 @@ CLASS lhc_travel IMPLEMENTATION.
 **********************************************************************
   METHOD validate_customer.
 
-  READ ENTITY /DMO/I_Travel_M\\travel FROM VALUE #(
+  READ ENTITY ZTP_I_Travel_M\\travel FROM VALUE #(
         FOR <root_key> IN keys ( %key     = <root_key>
                                  %control = VALUE #( customer_id = if_abap_behv=>mk-on ) ) )
         RESULT DATA(lt_travel).
 
-    DATA lt_customer TYPE SORTED TABLE OF /dmo/customer WITH UNIQUE KEY customer_id.
+    DATA lt_customer TYPE SORTED TABLE OF ZTP_customer WITH UNIQUE KEY customer_id.
 
     " Optimization of DB select: extract distinct non-initial customer IDs
     lt_customer = CORRESPONDING #( lt_travel DISCARDING DUPLICATES MAPPING customer_id = customer_id EXCEPT * ).
@@ -42,7 +42,7 @@ CLASS lhc_travel IMPLEMENTATION.
     CHECK lt_customer IS NOT INITIAL.
 
     " Check if customer ID exist
-    SELECT FROM /dmo/customer FIELDS customer_id
+    SELECT FROM ZTP_customer FIELDS customer_id
       FOR ALL ENTRIES IN @lt_customer
       WHERE customer_id = @lt_customer-customer_id
       INTO TABLE @DATA(lt_customer_db).
@@ -52,7 +52,7 @@ CLASS lhc_travel IMPLEMENTATION.
       IF ls_travel-customer_id IS NOT INITIAL AND NOT line_exists( lt_customer_db[ customer_id = ls_travel-customer_id ] ).
         APPEND VALUE #(  travel_id = ls_travel-travel_id ) TO failed.
         APPEND VALUE #(  travel_id = ls_travel-travel_id
-                         %msg      = new_message( id       = '/DMO/CM_FLIGHT_LEGAC'
+                         %msg      = new_message( id       = 'ZTP_CM_FLIGHT_LEGAC'
                                                   number   = '002'
                                                   v1       = ls_travel-customer_id
                                                   severity = if_abap_behv_message=>severity-error )
@@ -71,7 +71,7 @@ CLASS lhc_travel IMPLEMENTATION.
 **********************************************************************
   METHOD validate_dates.
 
-    READ ENTITY /DMO/I_Travel_M\\travel FROM VALUE #(
+    READ ENTITY ZTP_I_Travel_M\\travel FROM VALUE #(
         FOR <root_key> IN keys ( %key     = <root_key>
                                  %control = VALUE #( begin_date = if_abap_behv=>mk-on
                                                      end_date   = if_abap_behv=>mk-on ) ) )
@@ -85,8 +85,8 @@ CLASS lhc_travel IMPLEMENTATION.
                         travel_id   = ls_travel_result-travel_id ) TO failed.
 
         APPEND VALUE #( %key     = ls_travel_result-%key
-                        %msg     = new_message( id       = /dmo/cx_flight_legacy=>end_date_before_begin_date-msgid
-                                                number   = /dmo/cx_flight_legacy=>end_date_before_begin_date-msgno
+                        %msg     = new_message( id       = ZTP_cx_flight_legacy=>end_date_before_begin_date-msgid
+                                                number   = ZTP_cx_flight_legacy=>end_date_before_begin_date-msgno
                                                 v1       = ls_travel_result-begin_date
                                                 v2       = ls_travel_result-end_date
                                                 v3       = ls_travel_result-travel_id
@@ -100,8 +100,8 @@ CLASS lhc_travel IMPLEMENTATION.
                         travel_id   = ls_travel_result-travel_id ) TO failed.
 
         APPEND VALUE #( %key = ls_travel_result-%key
-                        %msg = new_message( id       = /dmo/cx_flight_legacy=>begin_date_before_system_date-msgid
-                                            number   = /dmo/cx_flight_legacy=>begin_date_before_system_date-msgno
+                        %msg = new_message( id       = ZTP_cx_flight_legacy=>begin_date_before_system_date-msgid
+                                            number   = ZTP_cx_flight_legacy=>begin_date_before_system_date-msgno
                                             severity = if_abap_behv_message=>severity-error )
                         %element-begin_date = if_abap_behv=>mk-on
                         %element-end_date   = if_abap_behv=>mk-on ) TO reported.
@@ -118,7 +118,7 @@ CLASS lhc_travel IMPLEMENTATION.
 **********************************************************************
   METHOD validate_travel_status.
 
-   READ ENTITY /DMO/I_Travel_M\\travel FROM VALUE #(
+   READ ENTITY ZTP_I_Travel_M\\travel FROM VALUE #(
       FOR <root_key> IN keys ( %key     = <root_key>
                                %control = VALUE #( overall_status = if_abap_behv=>mk-on ) ) )
       RESULT DATA(lt_travel_result).
@@ -133,8 +133,8 @@ CLASS lhc_travel IMPLEMENTATION.
           APPEND VALUE #( %key = ls_travel_result-%key ) TO failed.
 
           APPEND VALUE #( %key = ls_travel_result-%key
-                          %msg = new_message( id       = /dmo/cx_flight_legacy=>status_is_not_valid-msgid
-                                              number   = /dmo/cx_flight_legacy=>status_is_not_valid-msgno
+                          %msg = new_message( id       = ZTP_cx_flight_legacy=>status_is_not_valid-msgid
+                                              number   = ZTP_cx_flight_legacy=>status_is_not_valid-msgno
                                               v1       = ls_travel_result-overall_status
                                               severity = if_abap_behv_message=>severity-error )
                           %element-overall_status = if_abap_behv=>mk-on ) TO reported.
@@ -151,9 +151,9 @@ CLASS lhc_travel IMPLEMENTATION.
 **********************************************************************
   METHOD copy_travel.
 
-    SELECT MAX( travel_id ) FROM /dmo/travel_m INTO @DATA(lv_travel_id).
+    SELECT MAX( travel_id ) FROM ZTP_travel_m INTO @DATA(lv_travel_id).
 
-    READ ENTITY /dmo/i_travel_m FROM VALUE #( FOR travel IN keys
+    READ ENTITY ZTP_i_travel_m FROM VALUE #( FOR travel IN keys
                                                     (  %key                                = travel-%key
                                                        %control = VALUE #( travel_id       = if_abap_behv=>mk-on
                                                                            agency_id       = if_abap_behv=>mk-on
@@ -168,7 +168,7 @@ CLASS lhc_travel IMPLEMENTATION.
 
     DATA(lv_today) = cl_abap_context_info=>get_system_date( ).
 
-    DATA lt_create TYPE TABLE FOR CREATE /DMO/I_Travel_M\\travel.
+    DATA lt_create TYPE TABLE FOR CREATE ZTP_I_Travel_M\\travel.
 
     lt_create = VALUE #( FOR row IN  lt_read_result INDEX INTO idx
                              ( travel_id      = lv_travel_id + idx
@@ -192,8 +192,8 @@ CLASS lhc_travel IMPLEMENTATION.
                                                          description    = if_abap_behv=>mk-on
                                                          overall_status = if_abap_behv=>mk-on ) ) ) .
 
-*    MODIFY ENTITY /DMO/I_Travel_M\\travel
-     MODIFY ENTITIES OF /DMO/I_TRAVEL_M IN LOCAL MODE
+*    MODIFY ENTITY ZTP_I_Travel_M\\travel
+     MODIFY ENTITIES OF ZTP_I_TRAVEL_M IN LOCAL MODE
            ENTITY travel
         CREATE FROM lt_create
           MAPPED   mapped
@@ -220,7 +220,7 @@ CLASS lhc_travel IMPLEMENTATION.
   METHOD set_status_completed.
 
     " Modify in local mode: BO-related updates that are not relevant for authorization checks
-    MODIFY ENTITIES OF /DMO/I_TRAVEL_M IN LOCAL MODE
+    MODIFY ENTITIES OF ZTP_I_TRAVEL_M IN LOCAL MODE
            ENTITY travel
               UPDATE FROM VALUE #( for key in keys ( travel_id = key-travel_id
                                                      overall_status = 'A' " Accepted
@@ -237,7 +237,7 @@ CLASS lhc_travel IMPLEMENTATION.
 ********************************************************************************
   METHOD set_status_cancelled.
 
-    MODIFY ENTITIES OF /DMO/I_TRAVEL_M IN LOCAL MODE
+    MODIFY ENTITIES OF ZTP_I_TRAVEL_M IN LOCAL MODE
            ENTITY travel
               UPDATE FROM VALUE #( for key in keys ( travel_id = key-travel_id
                                                      overall_status = 'X'   " Canceled
@@ -254,7 +254,7 @@ CLASS lhc_travel IMPLEMENTATION.
 ********************************************************************************
   METHOD get_features.
 
-    READ ENTITY /dmo/i_travel_m FROM VALUE #( FOR keyval IN keys
+    READ ENTITY ZTP_i_travel_m FROM VALUE #( FOR keyval IN keys
                                                       (  %key                    = keyval-%key
                                                          %control-travel_id      = if_abap_behv=>mk-on
                                                          %control-overall_status = if_abap_behv=>mk-on ) )
@@ -280,11 +280,11 @@ CLASS lhc_travel IMPLEMENTATION.
 ********************************************************************************
   METHOD create_booking.
 
-    DATA: lv_next_booking_id TYPE /dmo/booking_id.
+    DATA: lv_next_booking_id TYPE ZTP_booking_id.
 
     LOOP AT keys INTO DATA(ls_cba).
 
-      READ ENTITY /dmo/i_travel_m BY \_booking
+      READ ENTITY ZTP_i_travel_m BY \_booking
       FROM VALUE #( ( travel_id = ls_cba-travel_id
                       %control  = VALUE #( travel_id = if_abap_behv=>mk-on ) ) )
            RESULT   DATA(lt_read_result)
@@ -298,7 +298,7 @@ CLASS lhc_travel IMPLEMENTATION.
         lv_next_booking_id = lt_read_result[ 1 ]-booking_id + 1.
       ENDIF.
 
-      MODIFY ENTITIES OF /dmo/i_travel_m IN LOCAL MODE
+      MODIFY ENTITIES OF ZTP_i_travel_m IN LOCAL MODE
       ENTITY  travel CREATE BY \_booking FROM VALUE #( ( travel_id = ls_cba-travel_id
                                                            %target = VALUE #( ( travel_id               = ls_cba-travel_id    "full key is required
                                                                                 booking_id              = lv_next_booking_id  "full key is required

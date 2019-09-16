@@ -1,4 +1,4 @@
-@AbapCatalog.sqlViewName: '/DMO/IBOOKING_U'
+@AbapCatalog.sqlViewName: 'ZTP_IBOOKING_U'
 @AbapCatalog.compiler.compareFilter: true
 @AbapCatalog.preserveKey: true
 @AccessControl.authorizationCheck: #NOT_REQUIRED
@@ -14,15 +14,15 @@
 
 @Search.searchable: true
 
-define view /DMO/I_Booking_U
-  as select from /dmo/booking as Booking
+define view ZTP_I_Booking_U
+  as select from ZTP_booking as Booking
 
-  association        to parent /DMO/I_Travel_U     as _Travel     on  $projection.TravelID = _Travel.TravelID
-  composition [0..*] of /DMO/I_BookingSupplement_U as _BookSupplement
+  association        to parent ZTP_I_Travel_U     as _Travel     on  $projection.TravelID = _Travel.TravelID
+  composition [0..*] of ZTP_I_BookingSupplement_U as _BookSupplement
 
-  association [1..1] to /DMO/I_Customer            as _Customer   on  $projection.CustomerID = _Customer.CustomerID
-  association [1..1] to /DMO/I_Carrier             as _Carrier    on  $projection.AirlineID = _Carrier.AirlineID
-  association [1..1] to /DMO/I_Connection          as _Connection on  $projection.AirlineID    = _Connection.AirlineID
+  association [1..1] to ZTP_I_Customer            as _Customer   on  $projection.CustomerID = _Customer.CustomerID
+  association [1..1] to ZTP_I_Carrier             as _Carrier    on  $projection.AirlineID = _Carrier.AirlineID
+  association [1..1] to ZTP_I_Connection          as _Connection on  $projection.AirlineID    = _Connection.AirlineID
                                                                   and $projection.ConnectionID = _Connection.ConnectionID
 {
 
@@ -52,19 +52,19 @@ define view /DMO/I_Booking_U
 
       @UI: { lineItem:  [ { position: 40, importance: #HIGH } ],
              identification: [ { position: 40 } ] }
-      @Consumption.valueHelpDefinition: [{entity: {name: '/DMO/I_Customer', element: 'CustomerID' }}]
+      @Consumption.valueHelpDefinition: [{entity: {name: 'ZTP_I_Customer', element: 'CustomerID' }}]
       @Search.defaultSearchElement: true
       Booking.customer_id           as CustomerID,
 
       @UI: { lineItem:       [ { position: 50, importance: #HIGH } ],
              identification: [ { position: 50 } ] }
-      @Consumption.valueHelpDefinition: [{entity: {name: '/DMO/I_Carrier', element: 'AirlineID' }}]
+      @Consumption.valueHelpDefinition: [{entity: {name: 'ZTP_I_Carrier', element: 'AirlineID' }}]
       @ObjectModel.text.association: '_Carrier'
       Booking.carrier_id            as AirlineID,
 
       @UI: { lineItem:       [ { position: 60, importance: #HIGH } ],
              identification: [ { position: 60 } ] }
-      @Consumption.valueHelpDefinition: [{entity: {name: '/DMO/I_Flight', element: 'ConnectionID' },
+      @Consumption.valueHelpDefinition: [{entity: {name: 'ZTP_I_Flight', element: 'ConnectionID' },
                                           additionalBinding: [{ localElement: 'FlightDate',   element: 'FlightDate'},
                                                               { localElement: 'AirlineID',    element: 'AirlineID'},
                                                               { localElement: 'FlightPrice',  element: 'Price' },
@@ -75,7 +75,7 @@ define view /DMO/I_Booking_U
 
       @UI: { lineItem:       [ { position: 70, importance: #HIGH } ],
              identification: [ { position: 70 } ] }
-      @Consumption.valueHelpDefinition: [{entity: {name: '/DMO/I_Flight', element: 'FlightDate' },
+      @Consumption.valueHelpDefinition: [{entity: {name: 'ZTP_I_Flight', element: 'FlightDate' },
                                           additionalBinding: [{ localElement: 'ConnectionID', element: 'ConnectionID'},
                                                               { localElement: 'AirlineID',    element: 'AirlineID'},
                                                               { localElement: 'FlightPrice',  element: 'Price' },

@@ -1,4 +1,4 @@
-@AbapCatalog.sqlViewName: '/DMO/IAIRPORT_RE'
+@AbapCatalog.sqlViewName: 'ZTP_IAIRPORT_RE'
 @AbapCatalog.compiler.compareFilter: true
 @AbapCatalog.preserveKey: true
 @AccessControl.authorizationCheck: #NOT_REQUIRED
@@ -6,8 +6,8 @@
 
 @Search.searchable: true
 
-define view /DMO/I_Airport
-  as select from /dmo/airport as Airport
+define view ZTP_I_Airport
+  as select from ZTP_airport as Airport
 
   association [0..1] to I_Country as _Country on $projection.CountryCode = _Country.Country
 

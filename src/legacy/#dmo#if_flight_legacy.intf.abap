@@ -1,7 +1,7 @@
 "! <strong>Interface for Flight Legacy Coding</strong><br/>
 "! Every used structure or table type needed in the API Function Modules
 "! will be defined here.
-INTERFACE /dmo/if_flight_legacy
+INTERFACE ZTP_if_flight_legacy
   PUBLIC.
 
 ***********************
@@ -36,14 +36,14 @@ INTERFACE /dmo/if_flight_legacy
 * Database table table types *
 ******************************
 
-  "! Table type of the table /DMO/TRAVEL
-  TYPES tt_travel             TYPE SORTED TABLE OF /dmo/travel     WITH UNIQUE KEY travel_id.
-  "! Table type of the table /DMO/BOOKING
-  TYPES tt_booking            TYPE SORTED TABLE OF /dmo/booking    WITH UNIQUE KEY travel_id  booking_id.
-  "! Table type of the table /DMO/BOOK_SUPPL
-  TYPES tt_booking_supplement TYPE SORTED TABLE OF /dmo/book_suppl WITH UNIQUE KEY travel_id  booking_id  booking_supplement_id.
-  "! Table type of the table /DMO/FLIGHT
-  TYPES tt_flight TYPE STANDARD TABLE OF /dmo/flight WITH KEY client carrier_id connection_id flight_date.
+  "! Table type of the table ZTP_TRAVEL
+  TYPES tt_travel             TYPE SORTED TABLE OF ZTP_travel     WITH UNIQUE KEY travel_id.
+  "! Table type of the table ZTP_BOOKING
+  TYPES tt_booking            TYPE SORTED TABLE OF ZTP_booking    WITH UNIQUE KEY travel_id  booking_id.
+  "! Table type of the table ZTP_BOOK_SUPPL
+  TYPES tt_booking_supplement TYPE SORTED TABLE OF ZTP_book_suppl WITH UNIQUE KEY travel_id  booking_id  booking_supplement_id.
+  "! Table type of the table ZTP_FLIGHT
+  TYPES tt_flight TYPE STANDARD TABLE OF ZTP_flight WITH KEY client carrier_id connection_id flight_date.
 
 
 
@@ -53,7 +53,7 @@ INTERFACE /dmo/if_flight_legacy
 
   "! Key structure of Travel
   TYPES BEGIN OF ts_travel_key.
-  TYPES travel_id TYPE /dmo/travel_id.
+  TYPES travel_id TYPE ZTP_travel_id.
   TYPES END OF ts_travel_key.
   "! Table type that contains only the keys of Travel
   TYPES tt_travel_key TYPE SORTED TABLE OF ts_travel_key WITH UNIQUE KEY travel_id.
@@ -61,7 +61,7 @@ INTERFACE /dmo/if_flight_legacy
   "! Key structure of Booking
   TYPES BEGIN OF ts_booking_key.
   INCLUDE TYPE ts_travel_key.
-  TYPES booking_id TYPE /dmo/booking_id.
+  TYPES booking_id TYPE ZTP_booking_id.
   TYPES END OF ts_booking_key.
   "! Table type that contains only the keys of Booking
   TYPES tt_booking_key TYPE SORTED TABLE OF ts_booking_key WITH UNIQUE KEY travel_id  booking_id.
@@ -69,7 +69,7 @@ INTERFACE /dmo/if_flight_legacy
   "! Key structure of Booking Supplements
   TYPES BEGIN OF ts_booking_supplement_key.
   INCLUDE TYPE ts_booking_key.
-  TYPES booking_supplement_id TYPE /dmo/booking_supplement_id.
+  TYPES booking_supplement_id TYPE ZTP_booking_supplement_id.
   TYPES END OF ts_booking_supplement_key.
   "! Table type that contains only the keys of Booking Supplements
   TYPES tt_booking_supplement_key TYPE SORTED TABLE OF ts_booking_supplement_key WITH UNIQUE KEY travel_id  booking_id  booking_supplement_id.
@@ -78,7 +78,7 @@ INTERFACE /dmo/if_flight_legacy
 
 ***********************************************************************************************************************************
 * Flag structures for data components                                                                                             *
-* IMPORTANT: When you add or remove fields from /DMO/TRAVEL, /DMO/BOOKING, /DMO/BOOK_SUPPL you need to change the following types *
+* IMPORTANT: When you add or remove fields from ZTP_TRAVEL, ZTP_BOOKING, ZTP_BOOK_SUPPL you need to change the following types *
 ***********************************************************************************************************************************
 
   TYPES:
@@ -128,21 +128,21 @@ INTERFACE /dmo/if_flight_legacy
   " Internally we use the full X-structures: With complete key and action code
   TYPES BEGIN OF ts_travelx.
   INCLUDE TYPE ts_travel_key.
-  TYPES action_code TYPE /dmo/action_code.
+  TYPES action_code TYPE ZTP_action_code.
   INCLUDE TYPE ts_travel_intx.
   TYPES END OF ts_travelx.
   TYPES: tt_travelx TYPE SORTED TABLE OF ts_travelx WITH UNIQUE KEY travel_id.
 
   TYPES BEGIN OF ts_bookingx.
   INCLUDE TYPE ts_booking_key.
-  TYPES action_code TYPE /dmo/action_code.
+  TYPES action_code TYPE ZTP_action_code.
   INCLUDE TYPE ts_booking_intx.
   TYPES END OF ts_bookingx.
   TYPES: tt_bookingx TYPE SORTED TABLE OF ts_bookingx WITH UNIQUE KEY travel_id  booking_id.
 
   TYPES BEGIN OF ts_booking_supplementx.
   INCLUDE TYPE ts_booking_supplement_key.
-  TYPES action_code TYPE /dmo/action_code.
+  TYPES action_code TYPE ZTP_action_code.
   INCLUDE TYPE ts_booking_supplement_intx.
   TYPES END OF ts_booking_supplementx.
   TYPES: tt_booking_supplementx TYPE SORTED TABLE OF ts_booking_supplementx WITH UNIQUE KEY travel_id  booking_id  booking_supplement_id.
@@ -160,7 +160,7 @@ INTERFACE /dmo/if_flight_legacy
     "! <li><em>update</em> = update a node</li>
     "! <li><em>delete</em> = delete a node</li>
     "! </ul>
-    BEGIN OF ENUM action_code_enum STRUCTURE action_code BASE TYPE /dmo/action_code,
+    BEGIN OF ENUM action_code_enum STRUCTURE action_code BASE TYPE ZTP_action_code,
       initial VALUE IS INITIAL,
       create  VALUE 'C',
       update  VALUE 'U',
@@ -175,7 +175,7 @@ INTERFACE /dmo/if_flight_legacy
     "! <li><em>Booked</em> = Booked Travel</li>
     "! <li><em>Cancelled</em> = Cancelled Travel</li>
     "! </ul>
-    BEGIN OF ENUM travel_status_enum STRUCTURE travel_status BASE TYPE /dmo/travel_status,
+    BEGIN OF ENUM travel_status_enum STRUCTURE travel_status BASE TYPE ZTP_travel_status,
       initial   VALUE IS INITIAL,
       new       VALUE 'N',
       planned   VALUE 'P',
@@ -193,15 +193,15 @@ INTERFACE /dmo/if_flight_legacy
   "! The caller of the BAPI like function modules shall not provide the administrative fields.
   TYPES BEGIN OF ts_travel_in.
   INCLUDE TYPE ts_travel_key.
-  INCLUDE TYPE /dmo/travel_data.
+  INCLUDE TYPE ZTP_travel_data.
   TYPES END OF ts_travel_in.
 
   "! INcoming structure of the node Booking.  It contains the booking key and data fields.<br/>
   "! The BAPI like function modules always refer to a single travel.
   "! Therefore the Travel ID is not required in the subnode tables.
   TYPES BEGIN OF ts_booking_in.
-  TYPES booking_id TYPE /dmo/booking_id.
-  INCLUDE TYPE /dmo/booking_data.
+  TYPES booking_id TYPE ZTP_booking_id.
+  INCLUDE TYPE ZTP_booking_data.
   TYPES END OF ts_booking_in.
   "! INcoming table type of the node Booking.  It contains the booking key and data fields.
   TYPES tt_booking_in TYPE SORTED TABLE OF ts_booking_in WITH UNIQUE KEY booking_id.
@@ -210,9 +210,9 @@ INTERFACE /dmo/if_flight_legacy
   "! The BAPI like function modules always refer to a single travel.
   "! Therefore the Travel ID is not required in the subnode tables but the booking key is required as it refers to it corresponding super node.
   TYPES BEGIN OF ts_booking_supplement_in.
-  TYPES booking_id TYPE /dmo/booking_id.
-  TYPES booking_supplement_id TYPE /dmo/booking_supplement_id.
-  INCLUDE TYPE /dmo/book_suppl_data.
+  TYPES booking_id TYPE ZTP_booking_id.
+  TYPES booking_supplement_id TYPE ZTP_booking_supplement_id.
+  INCLUDE TYPE ZTP_book_suppl_data.
   TYPES END OF ts_booking_supplement_in.
   "! INcoming table type of the node Booking Supplement.  It contains the booking key, booking supplement key and data fields.
   TYPES tt_booking_supplement_in TYPE SORTED TABLE OF ts_booking_supplement_in WITH UNIQUE KEY booking_id  booking_supplement_id.
@@ -229,8 +229,8 @@ INTERFACE /dmo/if_flight_legacy
   "! The BAPI like function modules always refer to a single travel.
   "! Therefore the Travel ID is not required in the subnode tables.
   TYPES BEGIN OF ts_booking_inx.
-  TYPES booking_id TYPE /dmo/booking_id.
-  TYPES action_code TYPE /dmo/action_code.
+  TYPES booking_id TYPE ZTP_booking_id.
+  TYPES action_code TYPE ZTP_action_code.
   INCLUDE TYPE ts_booking_intx.
   TYPES END OF ts_booking_inx.
   "! INcoming flag table type of the node Booking.  It contains key and the bit flag to the corresponding fields.
@@ -240,9 +240,9 @@ INTERFACE /dmo/if_flight_legacy
   "! The BAPI like function modules always refer to a single travel.
   "! Therefore the Travel ID is not required in the subnode tables.
   TYPES BEGIN OF ts_booking_supplement_inx.
-  TYPES           booking_id            TYPE /dmo/booking_id.
-  TYPES           booking_supplement_id TYPE /dmo/booking_supplement_id.
-  TYPES           action_code           TYPE /dmo/action_code.
+  TYPES           booking_id            TYPE ZTP_booking_id.
+  TYPES           booking_supplement_id TYPE ZTP_booking_supplement_id.
+  TYPES           action_code           TYPE ZTP_action_code.
   INCLUDE TYPE ts_booking_supplement_intx.
   TYPES END OF ts_booking_supplement_inx.
   "! INcoming flag table type of the node Booking Supplement.  It contains key and the bit flag to the corresponding fields.

@@ -1,4 +1,4 @@
-@AbapCatalog.sqlViewName: '/DMO/ISUPPTXT'
+@AbapCatalog.sqlViewName: 'ZTP_ISUPPTXT'
 @AbapCatalog.compiler.compareFilter: true
 @AbapCatalog.preserveKey: true
 @AccessControl.authorizationCheck: #NOT_REQUIRED
@@ -6,8 +6,8 @@
 
 @Search.searchable: true
 
-define view /DMO/I_SupplementText
-  as select from /dmo/suppl_text as SupplementText
+define view ZTP_I_SupplementText
+  as select from ZTP_suppl_text as SupplementText
 
 {
       @ObjectModel.text.element: ['Description']

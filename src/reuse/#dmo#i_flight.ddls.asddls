@@ -1,4 +1,4 @@
-@AbapCatalog.sqlViewName: '/DMO/IFLIGHT_RE'
+@AbapCatalog.sqlViewName: 'ZTP_IFLIGHT_RE'
 @AbapCatalog.compiler.compareFilter: true
 @AbapCatalog.preserveKey: true
 @AccessControl.authorizationCheck: #NOT_REQUIRED
@@ -6,11 +6,11 @@
 
 @Search.searchable: true
 
-define view /DMO/I_Flight
-  as select from /dmo/flight as Flight
+define view ZTP_I_Flight
+  as select from ZTP_flight as Flight
 
-  association [1] to /DMO/I_Carrier as _Airline         on $projection.AirlineID = _Airline.AirlineID
-  association [1] to /DMO/I_Connection as _Connection   on $projection.ConnectionID = _Connection.ConnectionID 
+  association [1] to ZTP_I_Carrier as _Airline         on $projection.AirlineID = _Airline.AirlineID
+  association [1] to ZTP_I_Connection as _Connection   on $projection.ConnectionID = _Connection.ConnectionID 
                                                        and $projection.AirlineID = _Connection.AirlineID
   association [0..1] to I_Currency     as _Currency     on $projection.CurrencyCode = _Currency.Currency
 
@@ -18,12 +18,12 @@ define view /DMO/I_Flight
       @Search.defaultSearchElement: true
       @Search.fuzzinessThreshold: 0.8
       @ObjectModel.text.association: '_Airline'
-      @Consumption.valueHelpDefinition: [{ entity: { name: '/DMO/I_Carrier' , element: 'AirlineID'} }]
+      @Consumption.valueHelpDefinition: [{ entity: { name: 'ZTP_I_Carrier' , element: 'AirlineID'} }]
   key Flight.carrier_id     as AirlineID,
 
       @Search.defaultSearchElement: true
       @Search.fuzzinessThreshold: 0.8
-      @Consumption.valueHelpDefinition: [{ entity: { name: '/DMO/I_Connection', element: 'ConnectionID'}, 
+      @Consumption.valueHelpDefinition: [{ entity: { name: 'ZTP_I_Connection', element: 'ConnectionID'}, 
                      additionalBinding: [{ element: 'AirlineID', localElement: 'AirlineID' }] }]
   key Flight.connection_id  as ConnectionID,
 

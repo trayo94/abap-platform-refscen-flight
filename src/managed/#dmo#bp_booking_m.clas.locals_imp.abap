@@ -21,7 +21,7 @@ CLASS lhc_travel IMPLEMENTATION.
   METHOD calculate_total_flight_price.
 
     IF keys IS NOT INITIAL.
-      /dmo/cl_travel_auxiliary_m=>calculate_price(
+      ZTP_cl_travel_auxiliary_m=>calculate_price(
           it_travel_id = VALUE #(  FOR GROUPS <booking> OF booking_key IN keys
                                        GROUP BY booking_key-travel_id WITHOUT MEMBERS
                                              ( <booking> ) ) ).
@@ -37,7 +37,7 @@ CLASS lhc_travel IMPLEMENTATION.
 **********************************************************************
   METHOD validate_booking_status.
 
-    READ ENTITY /DMO/I_Travel_M\\booking FROM VALUE #(
+    READ ENTITY ZTP_I_Travel_M\\booking FROM VALUE #(
       FOR <root_key> IN keys ( %key     = <root_key>
                                %control = VALUE #( booking_status = if_abap_behv=>mk-on ) ) )
       RESULT DATA(lt_booking_result).
@@ -52,8 +52,8 @@ CLASS lhc_travel IMPLEMENTATION.
           APPEND VALUE #( %key = ls_booking_result-%key ) TO failed.
 
           APPEND VALUE #( %key = ls_booking_result-%key
-                          %msg = new_message( id       = /dmo/cx_flight_legacy=>status_is_not_valid-msgid
-                                              number   = /dmo/cx_flight_legacy=>status_is_not_valid-msgno
+                          %msg = new_message( id       = ZTP_cx_flight_legacy=>status_is_not_valid-msgid
+                                              number   = ZTP_cx_flight_legacy=>status_is_not_valid-msgno
                                               v1       = ls_booking_result-booking_status
                                               severity = if_abap_behv_message=>severity-error )
                           %element-booking_status = if_abap_behv=>mk-on ) TO reported.
@@ -71,7 +71,7 @@ CLASS lhc_travel IMPLEMENTATION.
 ********************************************************************************
   METHOD get_features.
 
-    READ ENTITY /dmo/i_booking_m FROM VALUE #( FOR keyval IN keys
+    READ ENTITY ZTP_i_booking_m FROM VALUE #( FOR keyval IN keys
                                                       (  %key                  = keyval-%key
                                                          %control-booking_id   = if_abap_behv=>mk-on
                                                          %control-booking_date = if_abap_behv=>mk-on
@@ -97,11 +97,11 @@ CLASS lhc_travel IMPLEMENTATION.
 ********************************************************************************
   METHOD create_booking_supplement.
 
-    DATA: lv_next_booksuppl_id TYPE /dmo/booking_supplement_id.
+    DATA: lv_next_booksuppl_id TYPE ZTP_booking_supplement_id.
 
     LOOP AT keys INTO DATA(ls_cba).
 
-      READ ENTITY /DMO/I_Booking_M BY \_BookSupplement
+      READ ENTITY ZTP_I_Booking_M BY \_BookSupplement
       FROM VALUE #( ( travel_id  = ls_cba-travel_id
                       booking_id = ls_cba-booking_id
                       %control  = VALUE #( travel_id  = if_abap_behv=>mk-on
@@ -117,8 +117,8 @@ CLASS lhc_travel IMPLEMENTATION.
         lv_next_booksuppl_id = lt_read_result[ 1 ]-booking_supplement_id + 1.
       ENDIF.
 
-      "MODIFY ENTITY /DMO/I_Booking_M
-      MODIFY ENTITIES OF /dmo/i_travel_m IN LOCAL MODE
+      "MODIFY ENTITY ZTP_I_Booking_M
+      MODIFY ENTITIES OF ZTP_i_travel_m IN LOCAL MODE
         ENTITY booking
           CREATE BY \_BookSupplement FROM VALUE #( ( travel_id  = ls_cba-travel_id
                                                      booking_id = ls_cba-booking_id

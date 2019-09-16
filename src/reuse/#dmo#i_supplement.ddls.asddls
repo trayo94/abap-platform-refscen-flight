@@ -1,4 +1,4 @@
-@AbapCatalog.sqlViewName: '/DMO/ISUPPL'
+@AbapCatalog.sqlViewName: 'ZTP_ISUPPL'
 @AbapCatalog.compiler.compareFilter: true
 @AbapCatalog.preserveKey: true
 @AccessControl.authorizationCheck: #NOT_REQUIRED
@@ -6,10 +6,10 @@
 
 @Search.searchable: true
 
-define view /DMO/I_Supplement
-  as select from /dmo/supplement as Supplement
+define view ZTP_I_Supplement
+  as select from ZTP_supplement as Supplement
 
-  association [0..*] to /DMO/I_SupplementText as _SupplText on $projection.SupplementID = _SupplText.SupplementID
+  association [0..*] to ZTP_I_SupplementText as _SupplText on $projection.SupplementID = _SupplText.SupplementID
   association [0..1] to I_Currency            as _Currency  on $projection.CurrencyCode = _Currency.Currency
 
 {

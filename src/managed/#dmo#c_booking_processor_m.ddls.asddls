@@ -8,8 +8,8 @@
 
 @Search.searchable: true
 
-define view entity /DMO/C_Booking_Processor_M
-  as projection on /DMO/I_Booking_M
+define view entity ZTP_C_Booking_Processor_M
+  as projection on ZTP_I_Booking_M
 {
       @UI.facet: [ { id:            'Booking',
                      purpose:       #STANDARD,
@@ -38,7 +38,7 @@ define view entity /DMO/C_Booking_Processor_M
 
       @UI: { lineItem:       [ { position: 40, importance: #HIGH } ],
              identification: [ { position: 40 } ] }
-      @Consumption.valueHelpDefinition: [{entity: {name: '/DMO/I_Customer', element: 'CustomerID' }}]
+      @Consumption.valueHelpDefinition: [{entity: {name: 'ZTP_I_Customer', element: 'CustomerID' }}]
       @ObjectModel.text.element: ['CustomerName']
       @Search.defaultSearchElement: true
       customer_id        as CustomerID,
@@ -46,14 +46,14 @@ define view entity /DMO/C_Booking_Processor_M
 
       @UI: { lineItem:       [ { position: 50, importance: #HIGH } ],
              identification: [ { position: 50 } ] }
-      @Consumption.valueHelpDefinition: [{entity: {name: '/DMO/I_Carrier', element: 'AirlineID' }}]
+      @Consumption.valueHelpDefinition: [{entity: {name: 'ZTP_I_Carrier', element: 'AirlineID' }}]
       @ObjectModel.text.element: ['CarrierName']
       carrier_id         as CarrierID,
       _Carrier.Name      as CarrierName,
 
       @UI: { lineItem:       [ { position: 60, importance: #HIGH } ],
              identification: [ { position: 60 } ] }
-      @Consumption.valueHelpDefinition: [ {entity: {name: '/DMO/I_Flight', element: 'ConnectionID'},
+      @Consumption.valueHelpDefinition: [ {entity: {name: 'ZTP_I_Flight', element: 'ConnectionID'},
                                            additionalBinding: [ { localElement: 'FlightDate',   element: 'FlightDate'},
                                                                 { localElement: 'CarrierID',    element: 'AirlineID'},
                                                                 { localElement: 'FlightPrice',  element: 'Price'},
@@ -62,7 +62,7 @@ define view entity /DMO/C_Booking_Processor_M
 
       @UI: { lineItem:       [ { position: 70, importance: #HIGH } ],
              identification: [ { position: 70 } ] }
-      @Consumption.valueHelpDefinition: [ {entity: {name: '/DMO/I_Flight', element: 'FlightDate' },
+      @Consumption.valueHelpDefinition: [ {entity: {name: 'ZTP_I_Flight', element: 'FlightDate' },
                                            additionalBinding: [ { localElement: 'ConnectionID', element: 'ConnectionID'},
                                                                 { localElement: 'CarrierID',    element: 'AirlineID'},
                                                                 { localElement: 'FlightPrice',  element: 'Price' },
@@ -85,8 +85,8 @@ define view entity /DMO/C_Booking_Processor_M
       last_changed_at    as LastChangedAt, -- Take over from parent
 
       /* Associations */
-      _Travel         : redirected to parent /DMO/C_Travel_Processor_M,
-      _BookSupplement : redirected to composition child /DMO/C_BookSuppl_Processor_M,
+      _Travel         : redirected to parent ZTP_C_Travel_Processor_M,
+      _BookSupplement : redirected to composition child ZTP_C_BookSuppl_Processor_M,
       _Customer,
       _Carrier
 

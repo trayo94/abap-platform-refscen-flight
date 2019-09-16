@@ -1,4 +1,4 @@
-@AbapCatalog.sqlViewName: '/DMO/ICONNECT_R'
+@AbapCatalog.sqlViewName: 'ZTP_ICONNECT_R'
 @AbapCatalog.compiler.compareFilter: true
 @AccessControl.authorizationCheck: #NOT_REQUIRED
 @EndUserText.label: 'Connection View - CDS Data Model'
@@ -8,12 +8,12 @@
 
 @Search.searchable: true
 
-define view /DMO/I_Connection_R
-  as select from /dmo/connection as Connection
+define view ZTP_I_Connection_R
+  as select from ZTP_connection as Connection
 
-  association [1..*] to /DMO/I_Flight_R as _Flight  on  $projection.AirlineID    = _Flight.AirlineID
+  association [1..*] to ZTP_I_Flight_R as _Flight  on  $projection.AirlineID    = _Flight.AirlineID
                                                     and $projection.ConnectionID = _Flight.ConnectionID
-  association [1]    to /DMO/I_Carrier  as _Airline on  $projection.AirlineID = _Airline.AirlineID
+  association [1]    to ZTP_I_Carrier  as _Airline on  $projection.AirlineID = _Airline.AirlineID
 
 {
         @UI.facet: [
@@ -46,7 +46,7 @@ define view /DMO/I_Connection_R
         selectionField: [ { position: 10 }  ],
         identification:[ { position: 30, label: 'Departure Airport Code' } ] }
         @EndUserText.label: 'Departure Airport Code'
-        @Consumption.valueHelpDefinition: [{  entity: {   name: '/DMO/I_Airport',
+        @Consumption.valueHelpDefinition: [{  entity: {   name: 'ZTP_I_Airport',
                               element:    'AirportID' } }]
         @Search.defaultSearchElement: true
         @Search.fuzzinessThreshold: 0.7
@@ -57,7 +57,7 @@ define view /DMO/I_Connection_R
         selectionField: [ { position: 20 }  ],
         identification:[ { position: 40, label: 'Destination Airport Code' } ] }
         @EndUserText.label: 'Destination Airport Code'
-        @Consumption.valueHelpDefinition: [{  entity: {   name: '/DMO/I_Airport' ,
+        @Consumption.valueHelpDefinition: [{  entity: {   name: 'ZTP_I_Airport' ,
                                           element: 'AirportID' } }]
         @Search.defaultSearchElement: true
         @Search.fuzzinessThreshold: 0.7

@@ -1,4 +1,4 @@
-@AbapCatalog.sqlViewName: '/DMO/IAGENCY_RE'
+@AbapCatalog.sqlViewName: 'ZTP_IAGENCY_RE'
 @AbapCatalog.compiler.compareFilter: true
 @AbapCatalog.preserveKey: true
 @AccessControl.authorizationCheck: #NOT_REQUIRED
@@ -6,8 +6,8 @@
 
 @Search.searchable: true
 
-define view /DMO/I_Agency
-  as select from /dmo/agency as Agency
+define view ZTP_I_Agency
+  as select from ZTP_agency as Agency
 
   association [0..1] to I_Country as _Country on $projection.CountryCode = _Country.Country
 

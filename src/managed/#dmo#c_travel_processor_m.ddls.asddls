@@ -7,8 +7,8 @@
 
 @Search.searchable: true
 
-define root view entity /DMO/C_Travel_Processor_M
-  as projection on /DMO/I_Travel_M
+define root view entity ZTP_C_Travel_Processor_M
+  as projection on ZTP_I_Travel_M
 {
       @UI.facet: [ { id:              'Travel',
                      purpose:         #STANDARD,
@@ -33,7 +33,7 @@ define root view entity /DMO/C_Travel_Processor_M
           lineItem:       [ { position: 20, importance: #HIGH } ],
           identification: [ { position: 20 } ],
           selectionField: [ { position: 20 } ] }
-      @Consumption.valueHelpDefinition: [{ entity : {name: '/DMO/I_Agency', element: 'AgencyID'  } }]
+      @Consumption.valueHelpDefinition: [{ entity : {name: 'ZTP_I_Agency', element: 'AgencyID'  } }]
 
       @ObjectModel.text.element: ['AgencyName']
       @Search.defaultSearchElement: true
@@ -44,7 +44,7 @@ define root view entity /DMO/C_Travel_Processor_M
           lineItem:       [ { position: 30, importance: #HIGH } ],
           identification: [ { position: 30 } ],
           selectionField: [ { position: 30 } ] }
-      @Consumption.valueHelpDefinition: [{ entity : {name: '/DMO/I_Customer', element: 'CustomerID'  } }]
+      @Consumption.valueHelpDefinition: [{ entity : {name: 'ZTP_I_Customer', element: 'CustomerID'  } }]
 
       @ObjectModel.text.element: ['CustomerName']
       @Search.defaultSearchElement: true
@@ -91,7 +91,7 @@ define root view entity /DMO/C_Travel_Processor_M
       last_changed_at    as LastChangedAt,
 
       /* Associations */
-      _Booking : redirected to composition child /DMO/C_Booking_Processor_M,
+      _Booking : redirected to composition child ZTP_C_Booking_Processor_M,
       _Agency,
       _Customer
 }

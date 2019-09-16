@@ -6,13 +6,13 @@
 CLASS lcl_message_helper DEFINITION CREATE PRIVATE.
 
   PUBLIC SECTION.
-    TYPES tt_travel_failed      TYPE TABLE FOR FAILED   /dmo/i_travel_u.
-    TYPES tt_travel_reported    TYPE TABLE FOR REPORTED /dmo/i_travel_u.
+    TYPES tt_travel_failed      TYPE TABLE FOR FAILED   ZTP_i_travel_u.
+    TYPES tt_travel_reported    TYPE TABLE FOR REPORTED ZTP_i_travel_u.
 
     CLASS-METHODS handle_travel_messages
       IMPORTING iv_cid       TYPE string OPTIONAL
-                iv_travel_id TYPE /dmo/travel_id OPTIONAL
-                it_messages  TYPE /dmo/if_flight_legacy=>tt_message
+                iv_travel_id TYPE ZTP_travel_id OPTIONAL
+                it_messages  TYPE ZTP_if_flight_legacy=>tt_message
       CHANGING  failed       TYPE tt_travel_failed
                 reported     TYPE tt_travel_reported.
 ENDCLASS.
@@ -23,7 +23,7 @@ CLASS lcl_message_helper IMPLEMENTATION.
     LOOP AT it_messages INTO DATA(ls_message) WHERE msgty = 'E' OR msgty = 'A'.
       INSERT VALUE #( %cid = iv_cid  travelid = iv_travel_id )
              INTO TABLE failed.
-      INSERT /dmo/cl_travel_auxiliary=>map_travel_message(
+      INSERT ZTP_cl_travel_auxiliary=>map_travel_message(
                                           iv_travel_id = iv_travel_id
                                           is_message   = ls_message ) INTO TABLE reported.
     ENDLOOP.
@@ -68,15 +68,15 @@ CLASS lhc_travel IMPLEMENTATION.
 **********************************************************************
   METHOD create_travel.
 
-    DATA lt_messages   TYPE /dmo/if_flight_legacy=>tt_message.
-    DATA ls_travel_in  TYPE /dmo/if_flight_legacy=>ts_travel_in.
-    DATA ls_travel_out TYPE /dmo/travel.
+    DATA lt_messages   TYPE ZTP_if_flight_legacy=>tt_message.
+    DATA ls_travel_in  TYPE ZTP_if_flight_legacy=>ts_travel_in.
+    DATA ls_travel_out TYPE ZTP_travel.
 
     LOOP AT it_travel_create ASSIGNING FIELD-SYMBOL(<fs_travel_create>).
       CLEAR ls_travel_in.
-      ls_travel_in = CORRESPONDING #( /dmo/cl_travel_auxiliary=>map_travel_cds_to_db( CORRESPONDING #( <fs_travel_create> ) ) ).
+      ls_travel_in = CORRESPONDING #( ZTP_cl_travel_auxiliary=>map_travel_cds_to_db( CORRESPONDING #( <fs_travel_create> ) ) ).
 
-      CALL FUNCTION '/DMO/FLIGHT_TRAVEL_CREATE'
+      CALL FUNCTION 'ZTP_FLIGHT_TRAVEL_CREATE'
         EXPORTING
           is_travel   = ls_travel_in
         IMPORTING
@@ -112,14 +112,14 @@ CLASS lhc_travel IMPLEMENTATION.
 **********************************************************************
   METHOD update_travel.
 
-    DATA lt_messages    TYPE /dmo/if_flight_legacy=>tt_message.
-    DATA ls_travel      TYPE /dmo/if_flight_legacy=>ts_travel_in.
-    DATA ls_travelx TYPE /dmo/if_flight_legacy=>ts_travel_inx. "refers to x structure (> BAPIs)
+    DATA lt_messages    TYPE ZTP_if_flight_legacy=>tt_message.
+    DATA ls_travel      TYPE ZTP_if_flight_legacy=>ts_travel_in.
+    DATA ls_travelx TYPE ZTP_if_flight_legacy=>ts_travel_inx. "refers to x structure (> BAPIs)
 
     LOOP AT it_travel_update ASSIGNING FIELD-SYMBOL(<fs_travel_update>).
 
       CLEAR ls_travel.
-      ls_travel = CORRESPONDING #( /dmo/cl_travel_auxiliary=>map_travel_cds_to_db( CORRESPONDING #( <fs_travel_update> ) ) ).
+      ls_travel = CORRESPONDING #( ZTP_cl_travel_auxiliary=>map_travel_cds_to_db( CORRESPONDING #( <fs_travel_update> ) ) ).
 
       ls_travelx-travel_id     = ls_travel-travel_id.
 
@@ -134,7 +134,7 @@ CLASS lhc_travel IMPLEMENTATION.
       ls_travelx-status        = xsdbool( <fs_travel_update>-%control-status       = if_abap_behv=>mk-on ).
 
 
-      CALL FUNCTION '/DMO/FLIGHT_TRAVEL_UPDATE'
+      CALL FUNCTION 'ZTP_FLIGHT_TRAVEL_UPDATE'
         EXPORTING
           is_travel   = ls_travel
           is_travelx  = ls_travelx
@@ -164,11 +164,11 @@ CLASS lhc_travel IMPLEMENTATION.
 **********************************************************************
   METHOD delete_travel.
 
-    DATA lt_messages TYPE /dmo/if_flight_legacy=>tt_message.
+    DATA lt_messages TYPE ZTP_if_flight_legacy=>tt_message.
 
     LOOP AT it_travel_delete ASSIGNING FIELD-SYMBOL(<fs_travel_delete>).
 
-      CALL FUNCTION '/DMO/FLIGHT_TRAVEL_DELETE'
+      CALL FUNCTION 'ZTP_FLIGHT_TRAVEL_DELETE'
         EXPORTING
           iv_travel_id = <fs_travel_delete>-travelid
         IMPORTING
@@ -193,10 +193,10 @@ CLASS lhc_travel IMPLEMENTATION.
 *
 **********************************************************************
   METHOD read_travel.
-    DATA: ls_travel_out TYPE /dmo/travel.
+    DATA: ls_travel_out TYPE ZTP_travel.
 
     LOOP AT it_travel INTO DATA(ls_travel_to_read).
-      CALL FUNCTION '/DMO/FLIGHT_TRAVEL_READ'
+      CALL FUNCTION 'ZTP_FLIGHT_TRAVEL_READ'
         EXPORTING
           iv_travel_id = ls_travel_to_read-travelid
         IMPORTING
@@ -226,8 +226,8 @@ CLASS lhc_travel IMPLEMENTATION.
 
   METHOD set_travel_status.
 
-    DATA lt_messages TYPE /dmo/if_flight_legacy=>tt_message.
-    DATA ls_travel_out TYPE /dmo/travel.
+    DATA lt_messages TYPE ZTP_if_flight_legacy=>tt_message.
+    DATA ls_travel_out TYPE ZTP_travel.
 
     CLEAR et_travel_set_status_booked.
 
@@ -235,7 +235,7 @@ CLASS lhc_travel IMPLEMENTATION.
 
       DATA(lv_travelid) = <fs_travel_set_status_booked>-travelid.
 
-      CALL FUNCTION '/DMO/FLIGHT_TRAVEL_SET_BOOKING'
+      CALL FUNCTION 'ZTP_FLIGHT_TRAVEL_SET_BOOKING'
         EXPORTING
           iv_travel_id = lv_travelid
         IMPORTING
@@ -267,16 +267,16 @@ CLASS lhc_travel IMPLEMENTATION.
 *
 **********************************************************************
   METHOD cba_booking.
-    DATA lt_messages        TYPE /dmo/if_flight_legacy=>tt_message.
-    DATA lt_booking_old     TYPE /dmo/if_flight_legacy=>tt_booking.
-    DATA ls_booking         TYPE LINE OF /dmo/if_flight_legacy=>tt_booking_in.
-    DATA lv_last_booking_id TYPE /dmo/booking_id VALUE '0'.
+    DATA lt_messages        TYPE ZTP_if_flight_legacy=>tt_message.
+    DATA lt_booking_old     TYPE ZTP_if_flight_legacy=>tt_booking.
+    DATA ls_booking         TYPE LINE OF ZTP_if_flight_legacy=>tt_booking_in.
+    DATA lv_last_booking_id TYPE ZTP_booking_id VALUE '0'.
 
     LOOP AT it_booking_create_ba ASSIGNING FIELD-SYMBOL(<fs_booking_create_ba>).
 
       DATA(lv_travelid) = <fs_booking_create_ba>-travelid.
 
-      CALL FUNCTION '/DMO/FLIGHT_TRAVEL_READ'
+      CALL FUNCTION 'ZTP_FLIGHT_TRAVEL_READ'
         EXPORTING
           iv_travel_id = lv_travelid
         IMPORTING
@@ -290,18 +290,18 @@ CLASS lhc_travel IMPLEMENTATION.
         ENDIF.
 
         LOOP AT <fs_booking_create_ba>-%target ASSIGNING FIELD-SYMBOL(<fs_booking_create>).
-          ls_booking = /dmo/cl_travel_auxiliary=>map_booking_cds_to_db( CORRESPONDING #( <fs_booking_create> ) ).
+          ls_booking = ZTP_cl_travel_auxiliary=>map_booking_cds_to_db( CORRESPONDING #( <fs_booking_create> ) ).
 
           lv_last_booking_id += 1.
           ls_booking-booking_id = lv_last_booking_id.
 
-          CALL FUNCTION '/DMO/FLIGHT_TRAVEL_UPDATE'
+          CALL FUNCTION 'ZTP_FLIGHT_TRAVEL_UPDATE'
             EXPORTING
-              is_travel   = VALUE /dmo/if_flight_legacy=>ts_travel_in( travel_id = lv_travelid )
-              is_travelx  = VALUE /dmo/if_flight_legacy=>ts_travel_inx( travel_id = lv_travelid )
-              it_booking  = VALUE /dmo/if_flight_legacy=>tt_booking_in( ( ls_booking ) )
-              it_bookingx = VALUE /dmo/if_flight_legacy=>tt_booking_inx( ( booking_id  = ls_booking-booking_id
-                                                                           action_code = /dmo/if_flight_legacy=>action_code-create ) )
+              is_travel   = VALUE ZTP_if_flight_legacy=>ts_travel_in( travel_id = lv_travelid )
+              is_travelx  = VALUE ZTP_if_flight_legacy=>ts_travel_inx( travel_id = lv_travelid )
+              it_booking  = VALUE ZTP_if_flight_legacy=>tt_booking_in( ( ls_booking ) )
+              it_bookingx = VALUE ZTP_if_flight_legacy=>tt_booking_inx( ( booking_id  = ls_booking-booking_id
+                                                                           action_code = ZTP_if_flight_legacy=>action_code-create ) )
             IMPORTING
               et_messages = lt_messages.
 
@@ -311,7 +311,7 @@ CLASS lhc_travel IMPLEMENTATION.
 
             LOOP AT lt_messages INTO DATA(ls_message) WHERE msgty = 'E' OR msgty = 'A'.
               INSERT VALUE #( %cid = <fs_booking_create>-%cid ) INTO TABLE failed-booking.
-              INSERT /dmo/cl_travel_auxiliary=>map_booking_message(
+              INSERT ZTP_cl_travel_auxiliary=>map_booking_message(
                                                         iv_cid     = <fs_booking_create>-%cid
                                                         is_message = ls_message )
                                                     INTO TABLE reported-booking.
@@ -362,10 +362,10 @@ CLASS lsc_saver IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD save.
-    CALL FUNCTION '/DMO/FLIGHT_TRAVEL_SAVE'.
+    CALL FUNCTION 'ZTP_FLIGHT_TRAVEL_SAVE'.
   ENDMETHOD.
 
   METHOD cleanup.
-    CALL FUNCTION '/DMO/FLIGHT_TRAVEL_INITIALIZE'.
+    CALL FUNCTION 'ZTP_FLIGHT_TRAVEL_INITIALIZE'.
   ENDMETHOD.
 ENDCLASS.

@@ -1,4 +1,4 @@
-@AbapCatalog.sqlViewName: '/DMO/ITRAVEL_U'
+@AbapCatalog.sqlViewName: 'ZTP_ITRAVEL_U'
 @AbapCatalog.compiler.compareFilter: true
 @AbapCatalog.preserveKey: true
 @AccessControl.authorizationCheck: #NOT_REQUIRED
@@ -13,13 +13,13 @@
 
 @Search.searchable: true
 
-define root view /DMO/I_Travel_U
-  as select from /dmo/travel as Travel -- the travel table is the data source for this view
+define root view ZTP_I_Travel_U
+  as select from ZTP_travel as Travel -- the travel table is the data source for this view
 
-  composition [0..*] of /DMO/I_Booking_U as _Booking
+  composition [0..*] of ZTP_I_Booking_U as _Booking
 
-  association [0..1] to /DMO/I_Agency       as _Agency    on $projection.AgencyID        = _Agency.AgencyID
-  association [0..1] to /DMO/I_Customer     as _Customer  on $projection.CustomerID      = _Customer.CustomerID
+  association [0..1] to ZTP_I_Agency       as _Agency    on $projection.AgencyID        = _Agency.AgencyID
+  association [0..1] to ZTP_I_Customer     as _Customer  on $projection.CustomerID      = _Customer.CustomerID
   association [0..1] to I_Currency          as _Currency  on $projection.CurrencyCode    = _Currency.Currency
 
 
@@ -46,14 +46,14 @@ define root view /DMO/I_Travel_U
  
     @UI: { 
         lineItem: [ { position: 20, importance: #HIGH } ], identification:[ { position: 20 } ], selectionField: [ { position: 20 } ] }
-    @Consumption.valueHelpDefinition: [{ entity : {name: '/DMO/I_Agency', element: 'AgencyID'  } }]
+    @Consumption.valueHelpDefinition: [{ entity : {name: 'ZTP_I_Agency', element: 'AgencyID'  } }]
     @ObjectModel.text.association: '_Agency'
     @Search.defaultSearchElement: true         
     Travel.agency_id        as AgencyID,
             
     @UI: {
         lineItem: [ { position: 30, importance: #HIGH } ], identification:[ { position: 30 } ], selectionField: [ { position: 30 } ] }
-    @Consumption.valueHelpDefinition: [{ entity : {name: '/DMO/I_Customer', element: 'CustomerID'  } }]
+    @Consumption.valueHelpDefinition: [{ entity : {name: 'ZTP_I_Customer', element: 'CustomerID'  } }]
     @ObjectModel.text.association: '_Customer'
     @Search.defaultSearchElement: true             
     Travel.customer_id      as CustomerID,
