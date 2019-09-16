@@ -19,7 +19,7 @@
 "! @parameter et_booking_supplement | Table of evaluated Booking Supplements like ZTP_BOOK_SUPPL
 "! @parameter et_messages           | Table of occurred messages
 "!
-FUNCTION ZTP_FLIGHT_TRAVEL_CREATE.
+FUNCTION Z_TP_FLIGHT_TRAVEL_CREATE.
 *"----------------------------------------------------------------------
 *"*"Local Interface:
 *"  IMPORTING

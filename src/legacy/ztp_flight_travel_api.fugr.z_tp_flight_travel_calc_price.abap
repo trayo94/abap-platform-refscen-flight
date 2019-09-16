@@ -3,7 +3,7 @@
 "! If no parameters are applied, the price of every flight will be recalculated.
 "!
 "! @parameter it_flight | Set of Flights which should be recalculate prices
-FUNCTION ZTP_FLIGHT_TRAVEL_CALC_PRICE.
+FUNCTION Z_TP_FLIGHT_TRAVEL_CALC_PRICE.
 *"----------------------------------------------------------------------
 *"*"Local Interface:
 *"  IMPORTING

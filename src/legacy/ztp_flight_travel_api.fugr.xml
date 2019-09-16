@@ -4,12 +4,12 @@
   <asx:values>
    <AREAT>Flight Reference Scenario: Travel API</AREAT>
    <INCLUDES>
-    <SOBJ_NAME>ZTP_LFLIGHT_TRAVEL_APITOP</SOBJ_NAME>
-    <SOBJ_NAME>ZTP_SAPLFLIGHT_TRAVEL_API</SOBJ_NAME>
+    <SOBJ_NAME>Lztp_FLIGHT_TRAVEL_APITOP</SOBJ_NAME>
+    <SOBJ_NAME>SAPLztp_FLIGHT_TRAVEL_API</SOBJ_NAME>
    </INCLUDES>
    <FUNCTIONS>
     <item>
-     <FUNCNAME>ZTP_FLIGHT_TRAVEL_CALC_PRICE</FUNCNAME>
+     <FUNCNAME>Z_TP_FLIGHT_TRAVEL_CALC_PRICE</FUNCNAME>
      <SHORT_TEXT>Flight Reference Scenario: Calculate price</SHORT_TEXT>
      <IMPORT>
       <RSIMP>
@@ -28,7 +28,7 @@
      </DOCUMENTATION>
     </item>
     <item>
-     <FUNCNAME>ZTP_FLIGHT_TRAVEL_CREATE</FUNCNAME>
+     <FUNCNAME>Z_TP_FLIGHT_TRAVEL_CREATE</FUNCNAME>
      <SHORT_TEXT>Flight Reference Scenario: Create Travel Business Object</SHORT_TEXT>
      <IMPORT>
       <RSIMP>
@@ -110,7 +110,7 @@
      </DOCUMENTATION>
     </item>
     <item>
-     <FUNCNAME>ZTP_FLIGHT_TRAVEL_DELETE</FUNCNAME>
+     <FUNCNAME>Z_TP_FLIGHT_TRAVEL_DELETE</FUNCNAME>
      <SHORT_TEXT>Flight Reference Scenario: Delete Travel Business Object</SHORT_TEXT>
      <IMPORT>
       <RSIMP>
@@ -140,11 +140,11 @@
      </DOCUMENTATION>
     </item>
     <item>
-     <FUNCNAME>ZTP_FLIGHT_TRAVEL_INITIALIZE</FUNCNAME>
+     <FUNCNAME>Z_TP_FLIGHT_TRAVEL_INITIALIZE</FUNCNAME>
      <SHORT_TEXT>Flight Reference Scenario: Discard all changes since last SAVE</SHORT_TEXT>
     </item>
     <item>
-     <FUNCNAME>ZTP_FLIGHT_TRAVEL_READ</FUNCNAME>
+     <FUNCNAME>Z_TP_FLIGHT_TRAVEL_READ</FUNCNAME>
      <SHORT_TEXT>Flight Reference Scenario: Read Travel Business Object</SHORT_TEXT>
      <IMPORT>
       <RSIMP>
@@ -216,11 +216,11 @@
      </DOCUMENTATION>
     </item>
     <item>
-     <FUNCNAME>ZTP_FLIGHT_TRAVEL_SAVE</FUNCNAME>
+     <FUNCNAME>Z_TP_FLIGHT_TRAVEL_SAVE</FUNCNAME>
      <SHORT_TEXT>Flight Reference Scenario: Save travel changes</SHORT_TEXT>
     </item>
     <item>
-     <FUNCNAME>ZTP_FLIGHT_TRAVEL_SET_BOOKING</FUNCNAME>
+     <FUNCNAME>Z_TP_FLIGHT_TRAVEL_SET_BOOKING</FUNCNAME>
      <SHORT_TEXT>Flight Reference Scenario: Set booking status</SHORT_TEXT>
      <IMPORT>
       <RSIMP>
@@ -250,7 +250,7 @@
      </DOCUMENTATION>
     </item>
     <item>
-     <FUNCNAME>ZTP_FLIGHT_TRAVEL_UPDATE</FUNCNAME>
+     <FUNCNAME>Z_TP_FLIGHT_TRAVEL_UPDATE</FUNCNAME>
      <SHORT_TEXT>Flight Reference Scenario: Update Travel Business Object</SHORT_TEXT>
      <IMPORT>
       <RSIMP>

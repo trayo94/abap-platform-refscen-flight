@@ -3,7 +3,7 @@
 "! @parameter iv_travel_id          | Travel ID
 "! @parameter et_messages           | Table of occurred messages
 "!
-FUNCTION ZTP_FLIGHT_TRAVEL_SET_BOOKING.
+FUNCTION Z_TP_FLIGHT_TRAVEL_SET_BOOKING.
 *"----------------------------------------------------------------------
 *"*"Local Interface:
 *"  IMPORTING

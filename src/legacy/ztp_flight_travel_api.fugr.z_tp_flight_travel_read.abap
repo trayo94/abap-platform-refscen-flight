@@ -13,7 +13,7 @@
 "! @parameter et_booking_supplement | Table of Booking Supplements like ZTP_BOOK_SUPPL related to the importing Travel ID
 "! @parameter et_messages           | Table of occurred messages
 "!
-FUNCTION ZTP_FLIGHT_TRAVEL_READ.
+FUNCTION Z_TP_FLIGHT_TRAVEL_READ.
 *"----------------------------------------------------------------------
 *"*"Local Interface:
 *"  IMPORTING

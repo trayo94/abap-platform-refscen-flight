@@ -8,7 +8,7 @@
 "! @parameter iv_travel_id          | ID of the Travel to be deleted
 "! @parameter et_messages           | Table of occurred messages
 "!
-FUNCTION ZTP_FLIGHT_TRAVEL_DELETE.
+FUNCTION Z_TP_FLIGHT_TRAVEL_DELETE.
 *"----------------------------------------------------------------------
 *"*"Local Interface:
 *"  IMPORTING
