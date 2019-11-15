@@ -1,0 +1,8 @@
+@EndUserText.label: 'Service definition for managing travels'
+define service ZTP_UI_TRAVEL_Approver_M {
+  expose ZTP_C_Travel_Approver_M as Travel;
+  expose ZTP_C_Booking_Approver_M as Booking;
+  expose ZTP_I_Customer as Passenger;
+  expose ZTP_I_Agency as TravelAgency;
+  expose I_Currency as Currency;
+}

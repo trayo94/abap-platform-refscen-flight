@@ -1,8 +1,8 @@
 managed;
 
-define behavior for /DMO/I_Travel_M alias travel
-implementation in class /DMO/BP_TRAVEL_M unique
-persistent table /DMO/TRAVEL_M
+define behavior for ZTP_I_Travel_M alias travel
+implementation in class ZTP_BP_TRAVEL_M unique
+persistent table ZTP_TRAVEL_M
 etag last_changed_at
 lock master
 //authorization master(instance)
@@ -44,9 +44,9 @@ lock master
   action createBooking result [1] $self;
 }
 
-define behavior for /DMO/I_Booking_M alias booking
-implementation in class /DMO/BP_BOOKING_M unique
-persistent table /DMO/BOOKING_M
+define behavior for ZTP_I_Booking_M alias booking
+implementation in class ZTP_BP_BOOKING_M unique
+persistent table ZTP_BOOKING_M
 etag last_changed_at
 lock dependent( travel_id = travel_id )
 //authorization dependent( travel_id = travel_id )
@@ -77,9 +77,9 @@ lock dependent( travel_id = travel_id )
 }
 
 
-define behavior for /DMO/I_BookSuppl_M alias booksuppl
-implementation in class /DMO/BP_BOOKINGSUPPLEMENT_M unique
-persistent table /DMO/BOOKSUPPL_M
+define behavior for ZTP_I_BookSuppl_M alias booksuppl
+implementation in class ZTP_BP_BOOKINGSUPPLEMENT_M unique
+persistent table ZTP_BOOKSUPPL_M
 etag last_changed_at
 lock dependent( travel_id = travel_id )
 //authorization dependent( travel_id = travel_id )

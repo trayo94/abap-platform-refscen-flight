@@ -1,6 +1,6 @@
 projection;
 
-define behavior for /DMO/C_Travel_Processor_M alias TravelProcessor
+define behavior for ZTP_C_Travel_Processor_M alias TravelProcessor
 use etag
 {
   field ( readonly ) TotalPrice;
@@ -19,7 +19,7 @@ use etag
 
 }
 
-define behavior for /DMO/C_Booking_Processor_M alias BookingProcessor
+define behavior for ZTP_C_Booking_Processor_M alias BookingProcessor
 use etag
 {
   use update;
@@ -32,7 +32,7 @@ use etag
 
 }
 
-define behavior for /DMO/C_BookSuppl_Processor_M alias BookSupplProcessor
+define behavior for ZTP_C_BookSuppl_Processor_M alias BookSupplProcessor
 use etag
 {
   use update;
